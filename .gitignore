@@ -49,3 +49,5 @@ coverage/
 # Go workspace file
 go.work
 go.work.sum
+
+invalidconfig.txt
