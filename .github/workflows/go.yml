@@ -1,4 +1,5 @@
 # .github/workflows/go.yml
+# readmegen: "do not include go.yml in the readme generation content"
 name: Go
 
 on:
@@ -22,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          go mod download
+          go mod tidy
 
       - name: Run tests
         run: |
