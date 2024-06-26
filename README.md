@@ -1,7 +1,7 @@
 # ConfigManager-Go
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/your-username/configmanager-go)](https://goreportcard.com/report/github.com/your-username/configmanager-go)
-[![GoDoc](https://godoc.org/github.com/your-username/configmanager-go?status.svg)](https://godoc.org/github.com/your-username/configmanager-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/1broseidon/configmanager)](https://goreportcard.com/report/github.com/1broseidon/configmanager)
+[![GoDoc](https://godoc.org/github.com/1broseidon/configmanager?status.svg)](https://godoc.org/github.com/1broseidon/configmanager)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Table of Contents
@@ -26,18 +26,18 @@ The library prioritizes ease of use, flexibility, and robust error handling. It 
 
 ## Features
 
-- **Support for multiple configuration formats:**  Seamlessly load configuration from JSON, YAML, TOML, and INI files.
-- **Environment variable overrides:**  Override file-based configurations with environment variables for dynamic adjustments.
+- **Support for multiple configuration formats:** Seamlessly load configuration from JSON, YAML, TOML, and INI files.
+- **Environment variable overrides:** Override file-based configurations with environment variables for dynamic adjustments.
 - **Dynamic format detection:** Automatically determine the configuration format based on file extensions.
 - **Flattened data representation:** Access nested configuration values easily using dot-separated keys.
-- **Robust error handling:**  Provides clear error messages for common configuration issues.
+- **Robust error handling:** Provides clear error messages for common configuration issues.
 - **Extensible design:** Easily add support for new configuration formats.
-- **Thoroughly tested:**  Includes a comprehensive suite of unit tests to ensure reliability.
+- **Thoroughly tested:** Includes a comprehensive suite of unit tests to ensure reliability.
 
 ## Installation
 
 ```bash
-go get github.com/your-username/configmanager-go
+go get github.com/1broseidon/configmanager
 ```
 
 ## Usage
@@ -47,7 +47,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/your-username/configmanager-go"
+	"github.com/1broseidon/configmanager"
 )
 
 func main() {
@@ -57,7 +57,7 @@ func main() {
 	// Load configuration from a file (e.g., config.toml)
 	err := cm.LoadFromFile("config.toml")
 	if err != nil {
-		panic(err) 
+		panic(err)
 	}
 
 	// Access configuration values
@@ -105,7 +105,7 @@ We welcome contributions from the community! Please see our [CONTRIBUTING.md](CO
 
 ### Code of Conduct
 
-This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. 
+This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
 ## Project Structure
 
@@ -139,11 +139,11 @@ configmanager-go/
 ## Acknowledgements
 
 - This project utilizes the following excellent third-party libraries:
-    - `github.com/BurntSushi/toml`: For TOML parsing and encoding.
-    - `gopkg.in/ini.v1`: For INI file handling.
-    - `gopkg.in/yaml.v2`: For YAML parsing and encoding.
-- Thanks to all contributors who have helped make this project possible! 
-
+  - `github.com/BurntSushi/toml`: For TOML parsing and encoding.
+  - `gopkg.in/ini.v1`: For INI file handling.
+  - `gopkg.in/yaml.v2`: For YAML parsing and encoding.
+- Thanks to all contributors who have helped make this project possible!
 
 ## License
+
 This project is licensed under the MIT License License.
