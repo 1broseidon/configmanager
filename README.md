@@ -1,4 +1,4 @@
-# ConfigManager-Go
+# configmanager
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/1broseidon/configmanager)](https://goreportcard.com/report/github.com/1broseidon/configmanager)
 [![GoDoc](https://godoc.org/github.com/1broseidon/configmanager?status.svg)](https://godoc.org/github.com/1broseidon/configmanager)
@@ -17,7 +17,7 @@
 
 ## Project Description
 
-`configmanager-go` is a robust and flexible configuration management library for Go applications. It provides a unified interface for loading configuration data from various sources, including:
+`configmanager` is a robust and flexible configuration management library for Go applications. It provides a unified interface for loading configuration data from various sources, including:
 
 - JSON, YAML, TOML, and INI files
 - Environment variables
@@ -110,7 +110,7 @@ This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDU
 ## Project Structure
 
 ```
-configmanager-go/
+configmanager/
 ├── config/                 # Sample configuration files
 │   ├── config.json
 │   ├── config.toml
