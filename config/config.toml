@@ -1,0 +1,9 @@
+[database]
+  host = "localhost"
+  password = "savedpass"
+  port = 5432
+  user = "saveduser"
+
+[server]
+  host = "localhost"
+  port = 8080

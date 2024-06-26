@@ -1,0 +1,55 @@
+.readmegen/
+
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of the `go` command
+build/
+bin/
+release/
+
+# Dependency directories based on the OS
+/vendor/
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Environment variables and local settings
+.env
+
+# Directory for IDEs
+.idea/
+.vscode/
+*.swp
+
+# Mac OS folder attributes
+.DS_Store
+
+# Coverage files created by tools like `go test`
+*.cover
+
+# IDE specific files
+*.iml
+
+# Runtime generated files
+*.runtime
+
+# Test and Coverage result files
+*.out
+coverage/
+
+# Go related
+*.mod
+*.sum
+
+# Go workspace file
+go.work
+go.work.sum
