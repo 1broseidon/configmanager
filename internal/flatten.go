@@ -12,7 +12,6 @@ func Flatten(data map[string]interface{}) map[string]interface{} {
 	for k, v := range data {
 		flatten(v, k, result)
 	}
-	fmt.Printf("Flattened data: %+v\n", result)
 	return result
 }
 
@@ -42,7 +41,6 @@ func flatten(data interface{}, prefix string, result map[string]interface{}) map
 		}
 	default:
 		if prefix != "" {
-			fmt.Printf("Setting result[%s] = %+v\n", prefix, data)
 			result[prefix] = data
 		}
 	}
@@ -57,7 +55,6 @@ func Unflatten(data map[string]interface{}) map[string]interface{} {
 		m := result
 		for i, key := range keys {
 			if i == len(keys)-1 {
-				fmt.Printf("Setting m[%s] = %+v\n", key, v)
 				m[key] = v
 			} else {
 				if _, ok := m[key]; !ok {
@@ -67,6 +64,5 @@ func Unflatten(data map[string]interface{}) map[string]interface{} {
 			}
 		}
 	}
-	fmt.Printf("Unflattened data: %+v\n", result)
 	return result
 }
