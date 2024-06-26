@@ -98,6 +98,9 @@ func (cm *ConfigManager) SaveToFile(filename string, config ...ConfigSaver) erro
 		return fmt.Errorf("failed to save configuration to file %s: %w", filename, err)
 	}
 
+	// Debug: Print the data to be saved
+	fmt.Printf("Saving Data: %s\n", string(data))
+
 	// Write the data to file
 	if err := os.WriteFile(filename, data, 0644); err != nil {
 		return fmt.Errorf("failed to write data to file %s: %w", filename, err)
