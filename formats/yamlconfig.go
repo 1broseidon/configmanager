@@ -20,10 +20,7 @@ func (yc *YAMLConfig) Load(data []byte) error {
 		return fmt.Errorf("failed to unmarshal YAML data: %w", err)
 	}
 
-	fmt.Printf("Loaded YAML Data: %+v\n", temp) // Debug log to inspect loaded data
-
 	yc.Data = internal.Flatten(temp)
-	fmt.Printf("Flattened YAML Data: %+v\n", yc.Data) // Debug log to inspect flattened data
 
 	return nil
 }
@@ -31,7 +28,6 @@ func (yc *YAMLConfig) Load(data []byte) error {
 // Save saves YAML configuration data.
 func (yc *YAMLConfig) Save() ([]byte, error) {
 	unflattenedData := internal.Unflatten(yc.Data)
-	fmt.Printf("Unflattened YAML Data for Saving: %+v\n", unflattenedData) // Debug log to inspect unflattened data before saving
 	data, err := yaml.Marshal(unflattenedData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal YAML data: %w", err)

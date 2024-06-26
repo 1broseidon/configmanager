@@ -65,7 +65,6 @@ func (dc *DynamicConfig) Load(data []byte) error {
 func (dc *DynamicConfig) Save() ([]byte, error) {
 	// Unflatten the data
 	data := internal.Unflatten(dc.Data)
-	fmt.Printf("Saving Data: %+v\n", data)
 
 	switch ext := filepath.Ext(dc.Filename); ext {
 	case ".json":
