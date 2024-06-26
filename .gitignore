@@ -46,10 +46,6 @@ release/
 *.out
 coverage/
 
-# Go related
-*.mod
-*.sum
-
 # Go workspace file
 go.work
 go.work.sum
