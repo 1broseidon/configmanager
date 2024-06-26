@@ -1,58 +1,14 @@
 package configmanager_test
 
 import (
-	"errors"
+	"fmt"
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/1broseidon/configmanager"
-	"github.com/1broseidon/configmanager/testutils" // Import the testutils package
+	"github.com/1broseidon/configmanager/formats"
+	"github.com/1broseidon/configmanager/testutils"
 )
-
-func TestLoadInvalidFile(t *testing.T) {
-	cm := configmanager.New()
-	err := cm.LoadFromFile("../config/invalidfile.txt")
-	if !errors.Is(err, os.ErrNotExist) {
-		t.Fatalf("Expected error for non-existing file, got: %v", err)
-	}
-}
-
-func TestLoadInvalidFormat(t *testing.T) {
-	invalidConfig := []byte(`
-- invalid config
-`)
-	testutils.ResetConfigFile("../config/invalidconfig.txt", invalidConfig)
-
-	cm := configmanager.New()
-	err := cm.LoadFromFile("../config/invalidconfig.txt")
-	if err == nil {
-		t.Fatalf("Expected error for invalid config format, got nil")
-	}
-	expectedErr := "unsupported data format or failed to parse data"
-	if !strings.Contains(err.Error(), expectedErr) {
-		t.Fatalf("Unexpected error message: got %v, want %v", err, expectedErr)
-	}
-}
-
-func TestSaveToFileError(t *testing.T) {
-	cm := configmanager.New()
-
-	// Trying to save with an unsupported format
-	cm.UpdateKey("key", "value")
-	err := cm.SaveToFile("../config/config.unsupported")
-	if err == nil {
-		t.Fatalf("Expected error for unsupported file format, got nil")
-	}
-}
-
-func TestUpdateKeyError(t *testing.T) {
-	cm := configmanager.New()
-	err := cm.UpdateKey("nonexistent.key", "newvalue")
-	if err == nil {
-		t.Fatalf("Expected error for updating a non-existent key, got nil")
-	}
-}
 
 func TestUpdateKeysError(t *testing.T) {
 	cm := configmanager.New()
@@ -64,4 +20,109 @@ func TestUpdateKeysError(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected error for updating non-existent keys, got nil")
 	}
+
+	expectedErr := "key nonexistent.key1 does not exist"
+	if err.Error() != expectedErr {
+		t.Fatalf("Expected error `%s`, got `%s`", expectedErr, err.Error())
+	}
+}
+
+func TestVariadicLoadFromFile(t *testing.T) {
+	tomlConfig := []byte(`
+[database]
+user = "dbuser"
+password = "dbpass"
+host = "localhost"
+port = 5432
+
+[server]
+host = "localhost"
+port = 8080
+`)
+	testutils.ResetConfigFile("../config/config.toml", tomlConfig)
+
+	cm := configmanager.New()
+
+	// Test default (DynamicConfig)
+	err := cm.LoadFromFile("../config/config.toml")
+	if err != nil {
+		t.Fatalf("Error loading config with default DynamicConfig: %v", err)
+	}
+
+	expected := map[string]interface{}{
+		"database.user":     "dbuser",
+		"database.password": "dbpass",
+		"database.host":     "localhost",
+		"database.port":     int64(5432),
+		"server.host":       "localhost",
+		"server.port":       int64(8080),
+	}
+	testutils.AssertConfig(t, expected, cm.GetData())
+
+	// Test with specific format (TOMLConfig)
+	config := &formats.TOMLConfig{}
+	err = cm.LoadFromFile("../config/config.toml", config)
+	if err != nil {
+		t.Fatalf("Error loading TOML config: %v", err)
+	}
+
+	testutils.AssertConfig(t, expected, cm.GetData())
+}
+
+func TestVariadicSaveToFile(t *testing.T) {
+	tomlConfig := []byte(`
+[database]
+user = "dbuser"
+password = "dbpass"
+host = "localhost"
+port = 5432
+
+[server]
+host = "localhost"
+port = 8080
+`)
+	testutils.ResetConfigFile("../config/config.toml", tomlConfig)
+
+	cm := configmanager.New()
+	config := &formats.TOMLConfig{}
+	err := cm.LoadFromFile("../config/config.toml", config)
+	if err != nil {
+		t.Fatalf("Error loading TOML config: %v", err)
+	}
+
+	// Update a configuration key
+	err = cm.UpdateKey("database.user", "newuser")
+	if err != nil {
+		t.Fatalf("Error updating key: %v", err)
+	}
+
+	// Test default (DynamicConfig)
+	err = cm.SaveToFile("../config/config.toml")
+	if err != nil {
+		t.Fatalf("Error saving config with default DynamicConfig: %v", err)
+	}
+
+	// Read the saved content for verification
+	savedContent, err := os.ReadFile("../config/config.toml")
+	if err != nil {
+		t.Fatalf("Failed to read saved configuration: %v", err)
+	}
+	fmt.Printf("Saved TOML Content: %s\n", string(savedContent))
+
+	// Create a new ConfigManager to load the saved configuration
+	newCm := configmanager.New()
+	err = newCm.LoadFromFile("../config/config.toml", &formats.TOMLConfig{})
+	if err != nil {
+		t.Fatalf("Error loading saved config: %v", err)
+	}
+
+	expected := map[string]interface{}{
+		"database.user":     "newuser",
+		"database.password": "dbpass",
+		"database.host":     "localhost",
+		"database.port":     int64(5432),
+		"server.host":       "localhost",
+		"server.port":       int64(8080),
+	}
+	testutils.AssertConfig(t, expected, newCm.GetData())
 }

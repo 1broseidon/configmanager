@@ -87,7 +87,9 @@ func (cm *ConfigManager) SaveToFile(filename string, config ...ConfigSaver) erro
 			if err != nil {
 				return err
 			}
-			loader.Load(unflattenedBytes)
+			if err := loader.Load(unflattenedBytes); err != nil {
+				return fmt.Errorf("failed to update the config's data: %w", err)
+			}
 		}
 	} else {
 		saver = &DynamicConfig{Data: internal.Unflatten(cm.data), Filename: filename}
@@ -99,7 +101,7 @@ func (cm *ConfigManager) SaveToFile(filename string, config ...ConfigSaver) erro
 	}
 
 	// Debug: Print the data to be saved
-	fmt.Printf("Saving Data: %s\n", string(data))
+	fmt.Printf("Saving Data to File: %s - Data: %s\n", filename, string(data))
 
 	// Write the data to file
 	if err := os.WriteFile(filename, data, 0644); err != nil {
@@ -148,7 +150,7 @@ func (cm *ConfigManager) LoadEnvVariables(config *DynamicConfig) error {
 	return nil
 }
 
-// serializeData serializes unflattened data based on filename extension
+// serializeData serializes unflattened data based on filename extension.
 func serializeData(filename string, data map[string]interface{}) ([]byte, error) {
 	switch ext := filepath.Ext(filename); ext {
 	case ".json":

@@ -1,18 +1,12 @@
-# configmanager-go
+# ConfigManager-Go
 
-## Project Description
-
-`configmanager-go` is a robust and extensible configuration management library for Go applications. It provides a unified interface for loading, accessing, modifying, and saving configuration data from various sources, including:
-
-- **Configuration files:** Supports JSON, YAML, TOML, and INI formats.
-- **Environment variables:** Allows overriding configuration values.
-
-The library is designed with flexibility and ease of use in mind, making it simple to integrate into new or existing Go projects.
+[![Go Report Card](https://goreportcard.com/badge/github.com/your-username/configmanager-go)](https://goreportcard.com/report/github.com/your-username/configmanager-go)
+[![GoDoc](https://godoc.org/github.com/your-username/configmanager-go?status.svg)](https://godoc.org/github.com/your-username/configmanager-go)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Table of Contents
 
 - [Project Description](#project-description)
-- [Table of Contents](#table-of-contents)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -21,124 +15,135 @@ The library is designed with flexibility and ease of use in mind, making it simp
 - [Project Structure](#project-structure)
 - [Acknowledgements](#acknowledgements)
 
+## Project Description
+
+`configmanager-go` is a robust and flexible configuration management library for Go applications. It provides a unified interface for loading configuration data from various sources, including:
+
+- JSON, YAML, TOML, and INI files
+- Environment variables
+
+The library prioritizes ease of use, flexibility, and robust error handling. It is designed to simplify the process of managing application settings, allowing developers to focus on core application logic.
+
 ## Features
 
-- **Support for multiple configuration formats:** JSON, YAML, TOML, INI
-- **Dynamic format detection:** Automatically determine the format based on file extension.
-- **Environment variable overrides:** Easily override configuration values using environment variables.
-- **Data flattening and unflattening:** Simplifies access to nested configuration values.
-- **Concurrency-safe access:** Uses mutexes to ensure thread safety when reading and writing configuration data.
-- **Extensible design:** Supports custom configuration loaders and savers through interfaces.
-- **Thoroughly tested:** Includes a comprehensive suite of unit tests for reliability.
+- **Support for multiple configuration formats:**  Seamlessly load configuration from JSON, YAML, TOML, and INI files.
+- **Environment variable overrides:**  Override file-based configurations with environment variables for dynamic adjustments.
+- **Dynamic format detection:** Automatically determine the configuration format based on file extensions.
+- **Flattened data representation:** Access nested configuration values easily using dot-separated keys.
+- **Robust error handling:**  Provides clear error messages for common configuration issues.
+- **Extensible design:** Easily add support for new configuration formats.
+- **Thoroughly tested:**  Includes a comprehensive suite of unit tests to ensure reliability.
 
 ## Installation
 
-1. Make sure you have Go installed on your system.
-
-2. Use `go get` to install the `configmanager-go` package:
-
-   ```bash
-   go get github.com/1broseidon/configmanager
-   ```
-
-3. Import the package into your Go project:
-
-   ```go
-   import "github.com/1broseidon/configmanager"
-   ```
+```bash
+go get github.com/your-username/configmanager-go
+```
 
 ## Usage
-
-Here's a basic example demonstrating how to load configuration from a TOML file:
 
 ```go
 package main
 
 import (
 	"fmt"
-	"log"
-
-	"github.com/1broseidon/configmanager"
+	"github.com/your-username/configmanager-go"
 )
 
 func main() {
-	// Create a new ConfigManager
+	// Create a new ConfigManager instance
 	cm := configmanager.New()
 
-	// Load configuration from a TOML file
-	if err := cm.LoadFromFile("config.toml"); err != nil {
-		log.Fatal(err)
+	// Load configuration from a file (e.g., config.toml)
+	err := cm.LoadFromFile("config.toml")
+	if err != nil {
+		panic(err) 
 	}
 
 	// Access configuration values
 	databaseHost := cm.GetData()["database.host"].(string)
-	serverPort := int(cm.GetData()["server.port"].(float64))
+	serverPort := cm.GetData()["server.port"].(int)
 
 	fmt.Println("Database Host:", databaseHost)
 	fmt.Println("Server Port:", serverPort)
 }
 ```
 
-**config.toml:**
+## Configuration
+
+### Configuration File Example (`config.toml`):
 
 ```toml
 [database]
 host = "localhost"
 port = 5432
+user = "myuser"
+password = "mypassword"
 
 [server]
-host = "localhost"
+host = "0.0.0.0"
 port = 8080
 ```
 
-For more detailed examples and advanced usage, please refer to the [documentation](link-to-documentation).
+### Environment Variable Overrides:
 
-## Configuration
+Environment variables can be used to override configuration values loaded from files. The environment variable names should follow a specific pattern:
 
-`configmanager-go` primarily relies on configuration files for loading settings. The library supports the following formats:
+```
+CONFIG_SECTION_KEY=value
+```
 
-- JSON (.json)
-- YAML (.yaml, .yml)
-- TOML (.toml)
-- INI (.ini)
+For example, to override the `host` value in the `database` section, you would use the following environment variable:
 
-You can specify the configuration file to load using the `LoadFromFile` method. The library will automatically determine the format based on the file extension.
-
-**Environment Variable Overrides:**
-
-You can override configuration values using environment variables. The library will look for environment variables in uppercase with underscores separating nested keys. For example, to override the `database.host` value, you would set the environment variable `DATABASE_HOST`.
+```
+CONFIG_DATABASE_HOST=my-database-host
+```
 
 ## Contributing
 
-We welcome contributions from the community! If you'd like to contribute to `configmanager-go`, please follow these guidelines:
+We welcome contributions from the community! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to contribute code, report issues, and suggest enhancements.
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and ensure the tests pass.
-4. Submit a pull request.
+### Code of Conduct
 
-**Code of Conduct:**
-
-Please be respectful and considerate of others when contributing to the project. We follow the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
+This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. 
 
 ## Project Structure
 
-The project is structured as follows:
-
-- **`configmanager.go`:** Contains the core `ConfigManager` struct and related functions.
-- **`dynamicconfig.go`:** Implements dynamic configuration loading based on file extensions.
-- **`formats/`:** Contains format-specific configuration loaders and savers (JSON, YAML, TOML, INI).
-- **`internal/`:** Holds internal utility functions used by the library.
-- **`tests/`:** Contains unit tests for the library.
+```
+configmanager-go/
+├── config/                 # Sample configuration files
+│   ├── config.json
+│   ├── config.toml
+│   ├── config.yaml
+│   ├── invalidconfig.toml
+│   └── invalidconfig.txt
+├── formats/                # Format-specific configuration loaders and savers
+│   ├── jsonconfig.go
+│   ├── tomlconfig.go
+│   └── yamlconfig.go
+├── internal/               # Internal utility functions
+│   └── flatten.go
+├── configmanager.go         # Core configuration manager implementation
+├── dynamicconfig.go        # Dynamic configuration loading logic
+├── iniconfig.go            # INI configuration handler
+└── tests/                   # Unit tests
+    ├── configmanager_test.go
+    ├── iniconfig_test.go
+    ├── jsonconfig_test.go
+    ├── testutils/
+    │   └── utils.go
+    ├── tomlconfig_test.go
+    └── yamlconfig_test.go
+```
 
 ## Acknowledgements
 
-We would like to thank the developers of the following libraries for their contributions:
+- This project utilizes the following excellent third-party libraries:
+    - `github.com/BurntSushi/toml`: For TOML parsing and encoding.
+    - `gopkg.in/ini.v1`: For INI file handling.
+    - `gopkg.in/yaml.v2`: For YAML parsing and encoding.
+- Thanks to all contributors who have helped make this project possible! 
 
-- `github.com/BurntSushi/toml`: TOML parsing and encoding.
-- `gopkg.in/ini.v1`: INI file parsing.
-- `gopkg.in/yaml.v2`: YAML encoding and decoding.
 
 ## License
-
 This project is licensed under the MIT License License.

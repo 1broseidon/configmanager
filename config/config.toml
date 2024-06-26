@@ -1,8 +1,8 @@
 [database]
   host = "localhost"
-  password = "dbpass"
+  password = "savedpass"
   port = 5432
-  user = "newuser"
+  user = "saveduser"
 
 [server]
   host = "localhost"
