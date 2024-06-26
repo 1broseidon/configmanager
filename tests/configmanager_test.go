@@ -40,7 +40,7 @@ port = 8080
 	resetConfigFile("../config/config.toml", tomlConfig)
 
 	cm := configmanager.New()
-	config := &configmanager.DynamicConfig{}
+	config := &configmanager.TOMLConfig{}
 	err := cm.LoadFromFile("../config/config.toml", config)
 	if err != nil {
 		t.Fatalf("Error loading TOML config: %v", err)
@@ -66,6 +66,7 @@ func TestLoadInvalidFile(t *testing.T) {
 		t.Fatalf("Expected error for non-existing file, got: %v", err)
 	}
 }
+
 func TestLoadInvalidFormat(t *testing.T) {
 	invalidConfig := []byte(`
 - invalid config
@@ -167,7 +168,7 @@ func TestLoadJSONConfig(t *testing.T) {
 	resetConfigFile("../config/config.json", jsonConfig)
 
 	cm := configmanager.New()
-	config := &configmanager.DynamicConfig{}
+	config := &configmanager.JSONConfig{}
 	err := cm.LoadFromFile("../config/config.json", config)
 	if err != nil {
 		t.Fatalf("Error loading JSON config: %v", err)
@@ -199,7 +200,7 @@ server:
 	resetConfigFile("../config/config.yaml", yamlConfig)
 
 	cm := configmanager.New()
-	config := &configmanager.DynamicConfig{}
+	config := &configmanager.YAMLConfig{}
 	err := cm.LoadFromFile("../config/config.yaml", config)
 	if err != nil {
 		t.Fatalf("Error loading YAML config: %v", err)
@@ -230,7 +231,7 @@ host = "localhost"
 port = 8080
 `))
 	cm := configmanager.New()
-	config := &configmanager.DynamicConfig{}
+	config := &configmanager.TOMLConfig{}
 	err := cm.LoadFromFile("../config/config.toml", config)
 	if err != nil {
 		t.Fatalf("Error loading TOML config: %v", err)
@@ -260,7 +261,7 @@ host = "localhost"
 port = 8080
 `))
 	cm := configmanager.New()
-	config := &configmanager.DynamicConfig{}
+	config := &configmanager.TOMLConfig{}
 	err := cm.LoadFromFile("../config/config.toml", config)
 	if err != nil {
 		t.Fatalf("Error loading TOML config: %v", err)
@@ -295,7 +296,7 @@ host = "localhost"
 port = 8080
 `))
 	cm := configmanager.New()
-	config := &configmanager.DynamicConfig{}
+	config := &configmanager.TOMLConfig{}
 	err := cm.LoadFromFile("../config/config.toml", config)
 	if err != nil {
 		t.Fatalf("Error loading TOML config: %v", err)
@@ -317,7 +318,7 @@ port = 8080
 	}
 
 	newCm := configmanager.New()
-	newConfig := &configmanager.DynamicConfig{}
+	newConfig := &configmanager.TOMLConfig{}
 	err = newCm.LoadFromFile("../config/config.toml", newConfig)
 	if err != nil {
 		t.Fatalf("Error loading saved TOML config: %v", err)
